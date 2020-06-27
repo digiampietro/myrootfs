@@ -1,0 +1,21 @@
+# Busybox init does not support runlevels, this field is ignored:
+#   <id>:<runlevels>:<action>:<process>
+#
+# The <id> field is used to specify the controlling TTY for the process.
+#       This is different then sysvinit behavior!
+#
+# System startup
+::sysinit:/etc/init.d/rcS
+#::sysinit:/etc/init.d/udev start
+
+# Console
+# It seems madness not to 'respawn' the console login, but not doing so gets rid of a whole load of error messages in
+# the kernel log when we are configured for no console via the absence of switch 3. The implication of not respawning
+# is that if you log out of the main console (RS232 serial communication over ttyS2) you will not be able to log
+# back in without rebooting the machine. If someone finds a better method of sorting this out we could change 'once'
+# back to 'respawn'
+ttyS0::respawn:/sbin/getty -L 115200 ttyS0
+
+# Go into runlevel 0 (Halt)
+#::shutdown:/etc/init.d/rcH
+

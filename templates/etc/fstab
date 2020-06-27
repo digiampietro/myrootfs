@@ -1,0 +1,7 @@
+# /etc/fstab: static file system information.
+#
+# <file system> <mount point>   <type>  <options>			<dump>  <pass>
+/dev/mmbclk0    /               auto    defaults,errors=remount-ro      0 0
+proc            /proc           proc    defaults                        0 0
+none            /sys            sysfs   defaults                        0 0
+usbfs           /proc/bus/usb   usbfs   noauto                          0 0

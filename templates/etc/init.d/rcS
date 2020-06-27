@@ -1,0 +1,167 @@
+#!/bin/sh
+echo =================================
+echo Welcome to the Valerio mini root
+echo =================================
+echo Starting system...
+
+# First mount /proc!
+echo -n "mounting /proc: "
+mount -n -t proc /proc /proc
+mount -n -t sysfs /sys /sys
+echo "done."
+
+# '/' Can't be read-write on a cramfs system - probably was read only to start with, but...
+echo -n "Re-mounting '/' read-write: "
+mount -n -o remount,rw /dev/mmcblk0 /
+echo "done."
+
+# Bring up loopback
+echo -n "bringing up loopback interface: "
+ifconfig lo 127.0.0.1 up
+echo "done."
+
+# Setup the ram filesystem setup
+echo -n "Mounting 512KB ramfs on /tmp: "
+mount -n -t ramfs -o rw,maxsize=500,noatime /ramfs /tmp
+echo "done."
+
+# for the moment we will put var/log and var/tmp into ram
+mount -n -t ramfs -o rw,maxsize=128,noatime  /ramfs /var/log
+mount -n -t ramfs -o rw,maxsize=8,noatime /ramfs /var/tmp
+
+# we have a writeable dev directory so
+echo -n "Mounting /dev: "
+mount -n  -t ramfs -o rw,maxsize=2,noatime /ramfs /dev
+echo "done."
+
+#so we are now required to re-make suitable devnodes
+echo -n "Creating device nodes: "
+mknod /dev/null c 1 3
+mknod /dev/mem c 1 1
+mknod /dev/console c 5 1
+mknod /dev/ttyS0 c 4 64
+mknod /dev/ttyS1 c 4 65
+mknod /dev/ttyS2 c 4 66
+mknod /dev/fb0 c 29 0
+
+# devices required for telnet
+mknod /dev/ttyp0 c 3 0
+mknod /dev/ttyp1 c 3 1
+mknod /dev/ttyp2 c 3 2
+mknod /dev/ttyp3 c 3 3
+mknod /dev/ptyp0 c 2 0
+mknod /dev/ptyp1 c 2 1
+mknod /dev/ptyp2 c 2 2
+mknod /dev/ptyp3 c 2 3
+
+# devices required for usb memory stick
+### udev sorts these out for us
+###mknod /dev/sda b 8 0
+###mknod /dev/sda1 b 8 1
+###mknod /dev/sda2 b 8 2
+
+#device required for usb keyboard input to be picked up by Qt
+mknod /dev/tty0 c 4 0
+
+#devices required for the real time clock
+mknod /dev/rtc c 10 135
+echo "done."
+
+#devices required for secure shell
+mknod /dev/random c 1 18
+mknod /dev/urandom c 1 9
+
+#devices required for touch screen
+mkdir /dev/input
+mknod /dev/input/event0 c 13 64
+mknod /dev/input/event1 c 13 65
+mknod /dev/input/event2 c 13 66
+mknod /dev/input/event3 c 13 67
+mknod /dev/input/event4 c 13 68
+mknod /dev/input/event5 c 13 69
+
+#devices rerquired for i2c
+mknod /dev/i2c-0 c 89 0
+mknod /dev/i2c-1 c 89 1
+mknod /dev/i2c-2 c 89 2
+mknod /dev/i2c-3 c 89 3
+mknod /dev/i2c-4 c 89 4
+mknod /dev/i2c-5 c 89 5
+mknod /dev/i2c-6 c 89 6
+mknod /dev/i2c-7 c 89 7
+mknod /dev/i2c-8 c 89 8
+mknod /dev/i2c-9 c 89 9
+
+#device required for the watchdog
+mknod /dev/watchdog c 10  130
+
+mknod /dev/ctrace c 42 0
+
+# Start syslogd/klogd. Syslog options - 32kb max size before logrotate, 2 rotated logs to keep (messages, messages.0)
+echo -n "Starting syslogd: "
+syslogd -s 32 -b 2
+echo "done."
+echo -n "Starting klogd: "
+klogd
+echo "done."
+
+
+DEVICES=$(cat /proc/devices)
+
+lastword=""
+major=""
+       
+       
+for word in $DEVICES ; do
+    if [ "$word" = "mmc" ] ; then
+        if [ "$lastword" = "" ] ; then
+            echo "Can't find major device number for device mmc"
+        else
+            if [ "$major" = "" ] ; then
+		major=$lastword
+            else
+                echo "Multilpe major numbers for device mmc found"
+            fi
+        fi
+    fi
+    lastword=$word
+    
+done
+       
+if ! [ "$major" = "" ] ; then
+    echo "Found major number $major for device mmc"
+    mknod /dev/mmcblk0 b $major 0
+    mknod /dev/mmcblk0p1 b $major 1
+    # # attempt to mount this block
+    # mount -t ext3 -o rw,noatime /dev/mmcblk0p1 /mnt/tmp
+       
+    # if [ "$?" = "0" ] ; then
+    #     # check that the SDCARD is suitable for mounting as root
+    #     if [ -e "/mnt/tmp/mnt/tmp" ] ; then
+    #         if [ -e "/mnt/tmp/etc/init.d/linx-default-files/linx.init" ] ; then
+    # 		echo "Remounting SDCARD as root"
+    # 		cd /mnt/tmp
+    # 		mount --move /proc /mnt/tmp/proc && pivot_root . mnt/tmp
+    # 		cd /
+    # 		# move the ram baed directories we have created
+    # 		mount --move /mnt/tmp/sys /sys           
+    # 		mount --move /mnt/tmp/dev /dev
+    # 		mount --move /mnt/tmp/tmp /tmp
+    # 		mount --move /mnt/tmp/var/log /var/log
+    # 		mount --move /mnt/tmp/var/tmp /var/tmp
+    # 		exec chroot . sh -c 'umount /mnt/tmp; exec /etc/init.d/linx-default-files/linx.init' <dev/console >dev/console 2>&1
+    # 		echo "What are we doing here?"
+    # 		exit
+    #         fi
+    #     fi
+    # fi
+fi
+      
+# Set hostname
+test -e /etc/hostname && hostname -F /etc/hostname
+
+echo "running rc.d services..."
+run-parts -a start /etc/rc.d
+
+
+echo System started.
