@@ -76,6 +76,7 @@ export BUILD="$MAINDIR/build"
 export IMAGES="$MAINDIR/build/images"
 export TEMPLATES="$MAINDIR/templates"
 export CONFIGS="$MAINDIR/configs"
+export DOWNLOADS="$MAINDIR/download"
 eval   TCLIB=\$${CURRTC}_TCLIBPATH
 export TCLIB
 eval   TCPATH=\$${CURRTC}_TCBINPATH

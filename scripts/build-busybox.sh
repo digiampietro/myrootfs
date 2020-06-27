@@ -23,8 +23,11 @@ fi
 # make
 export CROSS_COMPILE=${TCPREFIX}-
 
+make CROSS_COMPILE=$CROSS_COMPILE distclean
 make CROSS_COMPILE=$CROSS_COMPILE defconfig
-cp $CONFIGS/busybox_defconfig .config
+cp   $CONFIGS/busybox_defconfig .config
+make CROSS_COMPILE=$CROSS_COMPILE oldconfig
+make CROSS_COMPILE=$CROSS_COMPILE dep
 make CROSS_COMPILE=$CROSS_COMPILE
 
 echo "-----> Make install"
