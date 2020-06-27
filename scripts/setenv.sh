@@ -75,6 +75,7 @@ export ROOTFS="$MAINDIR/build/rootfs"
 export BUILD="$MAINDIR/build"
 export IMAGES="$MAINDIR/build/images"
 export TEMPLATES="$MAINDIR/templates"
+export CONFIGS="$MAINDIR/configs"
 eval   TCLIB=\$${CURRTC}_TCLIBPATH
 export TCLIB
 eval   TCPATH=\$${CURRTC}_TCBINPATH
@@ -92,7 +93,7 @@ add2path $MYDIR
 
 if [ "$1" = "debug" ]
 then
-    for i in MAINDIR ROOTFS BUILD IMAGES TEMPLATES TCLIB TCPATH TCPREFIX TCGCC TCLD FAKEROOTCONF OLDPATH PATH
+    for i in MAINDIR ROOTFS BUILD IMAGES TEMPLATES CONFIGS TCLIB TCPATH TCPREFIX TCGCC TCLD FAKEROOTCONF OLDPATH PATH
     do
 	printf "%-13s : " $i
 	eval v=\$$i
