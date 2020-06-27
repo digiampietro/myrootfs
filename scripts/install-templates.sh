@@ -11,10 +11,23 @@ fi
 echo "-----> Installing templates to rootfs"
 if [ -e $FAKEROOTCONF ]
 then
-    fakeroot -i $FAKEROOTCONF -s $FAKEROOTCONF rsync --exclude .git/ --exclude .gitignore -rav $TEMPLATES/ $ROOTFS/
+    fakeroot -i $FAKEROOTCONF -s $FAKEROOTCONF rsync --exclude .git/ --exclude .gitignore --exclude create-dirs.txt -rav $TEMPLATES/ $ROOTFS/
 else
-    fakeroot                  -s $FAKEROOTCONF rsync --exclude .git/ --exclude .gitignore -rav $TEMPLATES/ $ROOTFS/
+    fakeroot                  -s $FAKEROOTCONF rsync --exclude .git/ --exclude .gitignore --exclude create-dirs.txt -rav $TEMPLATES/ $ROOTFS/
 fi
+
+echo "-----> creating missing directories"
+for i in `cat $TEMPLATES/create-dirs.txt`
+do
+    CDIR=${ROOTFS}$i
+    if [ ! -d $CDIR ]
+    then
+	echo "-----> creating $CDIR"
+	mkdir -p $CDIR
+    else
+	echo "-----> $CDIR already exists"
+    fi
+done
 
 if [ ! -d $ROOTFS/dev ]
 then
