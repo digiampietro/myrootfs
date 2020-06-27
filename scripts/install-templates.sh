@@ -11,9 +11,9 @@ fi
 echo "-----> Installing templates to rootfs"
 if [ -e $FAKEROOTCONF ]
 then
-    fakeroot -i $FAKEROOTCONF -s $FAKEROOTCONF rsync -rav $TEMPLATES/ $ROOTFS/
+    fakeroot -i $FAKEROOTCONF -s $FAKEROOTCONF rsync --exclude .git/ --exclude .gitignore -rav $TEMPLATES/ $ROOTFS/
 else
-    fakeroot                  -s $FAKEROOTCONF rsync -rav $TEMPLATES/ $ROOTFS/
+    fakeroot                  -s $FAKEROOTCONF rsync --exclude .git/ --exclude .gitignore -rav $TEMPLATES/ $ROOTFS/
 fi
 
 if [ ! -d $ROOTFS/dev ]
