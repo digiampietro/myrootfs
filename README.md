@@ -1,7 +1,7 @@
 # About
 
-This is a simple, and limited, project to build, from scratch, a (old)
-linux kernel and a (old) root file system to emulate (using QEMU) and
+This is a simple, and limited, project to build, from scratch, an (old)
+Linux kernel and an (old) root file system to emulate (using QEMU) and
 reverse engineer some interesting binaries of an industrial, special
 purpose printer based on an Intel Xscale PXA27x ARM processor.
 
@@ -14,16 +14,16 @@ Using tools like [Buildroot](https://www.buildroot.org), [The Yocto
 Project](https://www.yoctoproject.org/), [The OpenWrt Build
 System](https://openwrt.org/docs/guide-developer/build-system/start),
 [PTX Dist](https://www.ptxdist.org/) or similar tools is, by far, much
-better than building a toolchain, a linux kernel and a root file
+better than building a toolchain, a Linux kernel and a root file
 system, from scratch, using this project or similar set of scripts;
 unless you want to do this for educational purposes.
 
-If you want to re-build an old system with same, or similar, linux
-kernel, with same, or similar gcc and glibc versions and other old
+If you want to re-build an old system with same, or similar, Linux
+kernel, with same, or similar gcc and Glibc versions and other old
 libraries version, you start looking at old versions of the tools
 mentioned above. Sometimes it is not possible to find the right
 combinations of kernel, toolchain, and libraries supported by old
-versions of the tools mentioned above, when this happen this project
+versions of the tools mentioned above, when this happens this project
 can be useful.
 
 # Table of Content
@@ -45,10 +45,10 @@ can be useful.
 A friend of mine asked me to support him to overcome a limitation of
 his industrial printer, a [Linx
 CJ400](https://www.kemek.eu/en/product/linx-cj400-continuous-inkjet-printer/)
-used, mainly, to print expire dates on products, he provided me a dump
+used, mainly, to print expiry dates on products, he provided me a dump
 of the printer flash EEPROM. Because I didn't have access to the
 physical printer I started gathering information from the flash EEPROM
-and building an emulation enviroment on QEMU following the approach
+and building an emulation environment on QEMU following the approach
 described in a [talk at Hack In Paris
 2019](http://va.ler.io/2019/0616/hack_paris_2019_cyber_security_conference.html)
 Cybersecurity Conference and in the [Hardware Hacking
@@ -78,15 +78,15 @@ The main results of the information gathering is:
  * The gcc version used to compile the kernel and other applications
    is gcc 3.4.3 (released in 2004);
 
- * The system uses glibc version 2.3.3 (released in 2004);
+ * The system uses Glibc version 2.3.3 (released in 2004);
 
  * It uses the graphical library QT 4.7.3 to drive the small touch screen display;
 
  * It uses the Tslib library to get input from the touchscreen,
-   version is unedentified, but the related library file has the name:
+   version is unidentified, but the related library file has the name:
    libts-0.0.so.0.1.1;
 
- * The kernel defconfig file, used to configure the kernel, is
+ * The kernel defconfig file used to configure the kernel, is
    included in the firmware/kernel image; this provides additional
    information;
 
@@ -94,7 +94,7 @@ The main results of the information gathering is:
    available on the [supplier's website](https://www.linxglobal.com);
    a possible GNU license violation?
 
- * The mainboard seems based on the Intel Mainstone devolpoment board
+ * The mainboard seems based on the Intel Mainstone development board
    that is supported by the Linux kernel and by QEMU;
 
  * It seems that there are also patches to fix issues that the kernel
@@ -103,7 +103,7 @@ The main results of the information gathering is:
  * QEMU is able, emulating the Mainstone board, to successfully boot
    the unmodified original kernel and original root file system;
 
- * The applications we are interested in crash in QEMU, because of
+ * The application we are interested in crashes in QEMU, because of
    missing, special purpose devices, on the emulated board;
 
  * Some graphical applications start in QEMU, can display the initial
@@ -116,7 +116,7 @@ The main results of the information gathering is:
 
 I did the first trial to build the emulated environment using
 Buildroot and the oldest Buildroot version (released in 2013) that was
-supporting glibc. Previous versions were supporting alternative, and
+supporting Glibc. Previous versions were supporting alternative, and
 smaller, libc variants like uClibc.
 
 Buildroot didn't explicitly support the Mainstone board, anyway the
@@ -144,37 +144,37 @@ received the following error:
 not found (required by ./UsbAuthDialog)
 ```
 
-This is probably related to the fact thet the glibc version installed
+This is probably related to the fact that the Glibc version installed
 on our root file system (2.18, released in 2013) is more recent than
-the original glibc version (2.3.3, released in 2004)
+the original Glibc version (2.3.3, released in 2004)
 
 ### Second step, harder but more accurate
 
 To build a more accurate emulation system I decided to build
-everything (Toolchain, Linux Kernel and root file system) from
+everything (Toolchain, Linux Kernel, and root file system) from
 scratch, because I wasn't able to find any automatic (old) build
-system with the right combinations of toolchain/kernel/glibc versions.
+system with the right combinations of toolchain/kernel/Glibc versions.
 
 The target was to use same, or similar, versions as in our industrial
 printer:
 
- * gcc 3.4.3
+ * Gcc 3.4.3
 
- * glibc 2.3.3
+ * Glibc 2.3.3
 
- * kernel 2.6.10
+ * Kernel 2.6.10
 
-The nearest toolchain I was able to build, using an old verison (0.43)
+The nearest toolchain I was able to build, using an old version (0.43)
 of [Crosstool](http://kegel.com/crosstool/) (before it became
 [Crosstool-NG](http://crosstool-ng.github.io/)), is based on:
 
- * gcc 3.4.5, it should be ok, only the patch level is slightly higher
-   than our original target;
+ * Gcc 3.4.5, it should be ok, only the patch level is slightly higher
+   then our original target;
 
- * glibc 2.3.5, it should be ok, only the patch level is slightly higher
-   than our original target.
+ * Glibc 2.3.5, it should be ok, only the patch level is slightly higher
+   then our original target.
 
-Regarding the kernel I successfully compiled the kernel 2.6.10 with
+Regarding the kernel, I successfully compiled the kernel 2.6.10 with
 the above toolchain, but, probably because I didn't have the same
 patches that the printer's firmware developer applied to this kernel
 version, I wasn't able to mount the root file system on the emulated
@@ -191,17 +191,17 @@ not fit for the job.
 
 I downloaded another, additional, old toolchain, originally released
 by [Code Sourcery](http://codesourcery.com) (now part of Mentor
-Graphics, a Siemens Company) based on gcc 4.6.1 and that is able to
-compile the kernel 2.6.21.
+Graphics, a Siemens Company) based on gcc 4.6.1 and that can compile
+the kernel 2.6.21.
 
-I used the crosstool toolchain to build the root file system.
+I used the Crosstool toolchain to build the root file system.
 
 I was not able to use a recent Linux distribution to recompile
 everything, because it is impossible to recompile old, and complex,
 software (like the toolchain) with a modern gcc compiler. To reduce
 the risks of difficult or impossible to fix compilation errors it is
 much better to use a Linux distribution of the same age, more or less,
-of the toolchain we want to build. For this reason I used a Debian
+of the toolchain we want to build. For this reason, I used a Debian
 Etch (released in 2007) in a Docker container sharing the user's home
 directory with the Linux host.
 
@@ -252,7 +252,7 @@ The main scripts in the **scripts** folder are:
 
  * **install-templates.sh** installs template files to the root file system;
 
- * **install-libs.sh** installs toolchain libreries to the root file system;
+ * **install-libs.sh** installs toolchain libraries to the root file system;
 
  * **make-clean.sh** clean (remove files) the root file system and the
      root file system image;
@@ -262,11 +262,8 @@ The main scripts in the **scripts** folder are:
  * **kermake.sh** set the correct environment for kernel compilation
      and then execute the make command;
 
- * **mytc.sh** set the crosstoolchain environment and then executes
+ * **mytc.sh** set the cross-toolchain environment and then executes
      the command passed as argument;
 
  * **qr.sh** executes QEMU with the Linux Kernel zImage and the root
      file system image.
-
-
-
