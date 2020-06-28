@@ -100,7 +100,7 @@ The main results of the information gathering is:
 
 ## Building the emulation environment
 
-### First step, easiest but less accurate way
+### First step, easiest but less accurate
 
 I did the first trial to build the emulated environment using
 Buildroot and the oldest Buildroot version (released in 2011) that was
@@ -182,4 +182,66 @@ Siemens Company) based on gcc 4.6.1 and that is able to compile the
 kernel 2.6.21.
 
 I used the crosstool toolchain to build the root file system.
+
+# Description
+
+This project has the following folders:
+
+ * **build** used for compilation and image generation;
+
+ * **configs** used for configurations, like the kernel defconfig and
+     other packages configuration;
+
+ * **download** used to store packages, toolchain and kernels
+     downloaded from Internet;
+
+ * **templates** used to store files that will be copied to the root
+     file system;
+
+ * **scripts** used to store the scripts used to build the toolchain,
+     the kernel, the packages and to generate the root file system.
+
+
+## Main scripts
+
+The main scripts in the **scripts** folder are:
+
+ * **setenv.sh** this file is sourced by all of the other files and
+     contains environment variable settings;
+
+ * **rebuild.sh** this is the main file to download and compile
+     everything (toolchain, kernel, packages) and to generate the root
+     file system;
+
+ * **pkgs-download.sh** downlad packages and extract them in the
+     **build** directory;
+
+ * **packages.txt** list of URLs containing toolchains, kernel and
+     packages to download;
+
+ * **install-toolchains.sh** compile and install the two toolchains
+     (one used for kernel compilation and the other for packages
+     compilation);
+
+ * **build-...** build script to build the kernel or the related packages;
+
+ * **install-templates.sh** installs template files to the root file system;
+
+ * **install-libs.sh** installs toolchain libreries to the root file system;
+
+ * **make-clean.sh** clean (remove files) the root file system and the
+     root file system image;
+
+ * **make-images.sh** create the root file system image;
+
+ * **kermake.sh** set the correct environment for kernel compilation
+     and then execute the make command;
+
+ * **mytc.sh** set the crosstoolchain environment and then executes
+     the command passed as argument;
+
+ * **qr.sh** executes QEMU with the Linux Kernel zImage and the root
+     file system image.
+
+
 
