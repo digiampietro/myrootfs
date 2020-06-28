@@ -7,6 +7,9 @@ export MYDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $MYDIR/setenv.sh
 
 for i in make-clean.sh \
+	 pkgs-download.sh \
+	 install-toolchains.sh \
+	 build-kernel \
          install-templates.sh \
 	 install-libs.sh  \
 	 build-busybox.sh \
