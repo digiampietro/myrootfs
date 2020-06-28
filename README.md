@@ -1,9 +1,9 @@
 # About
 
-This is a very simple, and limited, project to build, from scratch, a
-(old) linux kernel and a (old) root file system to emulate (using
-QEMU) and reverse engineer some interesting binaries of an industrial,
-special purpose printer based on an Intel Xscale PXA27x arm processor.
+This is a simple, and limited, project to build, from scratch, a (old)
+linux kernel and a (old) root file system to emulate (using QEMU) and
+reverse engineer some interesting binaries of an industrial, special
+purpose printer based on an Intel Xscale PXA27x ARM processor.
 
 It is easy to adapt this project to other versions of Linux or other
 embedded architectures, it can be especially useful, as a starting
@@ -20,7 +20,7 @@ unless you want to do this for educational purposes.
 
 If you want to re-build an old system with same, or similar, linux
 kernel, with same, or similar gcc and glibc versions and other old
-library versions, you start looking at old versions of the tools
+libraries version, you start looking at old versions of the tools
 mentioned above. Sometimes it is not possible to find the right
 combinations of kernel, toolchain, and libraries supported by old
 versions of the tools mentioned above, when this happen this project
@@ -74,8 +74,8 @@ The main results of the information gathering is:
    version is unedentified, but the related library file has the name:
    libts-0.0.so.0.1.1;
 
- * In the firmware/kernel image it is included the kernel defconfig
-   file used to configure the kernel that provides additional
+ * The kernel defconfig file, used to configure the kernel, is
+   included in the firmware/kernel image; this provides additional
    information;
 
  * The kernel uses many custom drivers, included in the kernel, but not
@@ -89,7 +89,7 @@ The main results of the information gathering is:
    2.6.10 is known to have with the Mainstone board;
 
  * QEMU is able, emulating the Mainstone board, to successfully boot
-   the unmodified original kernel and original root file systems;
+   the unmodified original kernel and original root file system;
 
  * The applications we are interested in crash in QEMU, because of
    missing, special purpose devices, on the emulated board;
@@ -103,7 +103,7 @@ The main results of the information gathering is:
 ### First step, easiest but less accurate
 
 I did the first trial to build the emulated environment using
-Buildroot and the oldest Buildroot version (released in 2011) that was
+Buildroot and the oldest Buildroot version (released in 2013) that was
 supporting glibc. Previous versions were supporting alternative, and
 smaller, libc variants like uClibc.
 
@@ -112,10 +112,11 @@ Linux kernel supported it. The result was that the Linux kernel,
 produced by Buildroot, didn't successfully boot on the emulated QEMU
 board.
 
-I compiled a much more recent Linux Kernel (4.7.5) using a toolchain
-built with [crosstool-NG](http://crosstool-ng.github.io/); I used the root
-file system built by Buildroot and I was able to successfully boot
-the emulated system.
+I compiled a much more recent Linux Kernel (4.7.5, released in 2016)
+using a toolchain built with
+[crosstool-NG](http://crosstool-ng.github.io/); I used the root file
+system built by Buildroot and I was able to successfully boot the
+emulated system.
 
 I copied the original printer's root file system on a directory of the
 actual root file system of the QEMU machine and, using chroot, I was
@@ -167,8 +168,8 @@ patches that the printer's firmware developer applied to this kernel
 version, I wasn't able to mount the root file system on the emulated
 SD card.
 
-I found on Internet some issues with some kernel version and the
-support of the Intel mainstone board; making a long story short, I
+I found on the Internet some issues with some kernel version and the
+support of the Intel Mainstone board; making a long story short, I
 found that the kernel 2.6.21 (released in 2007) was the older mainline
 kernel supporting without, big issues, the QEMU emulated Mainstone
 board.
@@ -176,12 +177,24 @@ board.
 But to compile the 2.6.21 kernel a toolchain based on gcc 3.4.5 was
 not fit for the job.
 
-I downloaded another old toolchain, originally released by [Code
-Sourcery](http://codesourcery.com) (now part of Mentor Graphics, a
-Siemens Company) based on gcc 4.6.1 and that is able to compile the
-kernel 2.6.21.
+I downloaded another, additional, old toolchain, originally released
+by [Code Sourcery](http://codesourcery.com) (now part of Mentor
+Graphics, a Siemens Company) based on gcc 4.6.1 and that is able to
+compile the kernel 2.6.21.
 
 I used the crosstool toolchain to build the root file system.
+
+I was not able to use a recent Linux distribution to recompile
+everything, because it is impossible to recompile old, and complex,
+software (like the toolchain) with a modern gcc compiler. To reduce
+the risks of difficult or impossible to fix compilation errors it is
+much better to use a Linux distribution of the same age, more or less,
+of the toolchain we want to build. For this reason I used a Debian
+Etch (released in 2007) in a Docker container sharing the user's home
+directory with the Linux host.
+
+The QEMU emulation, instead, runs on a modern Linux distribution (in
+my case Ubuntu 18.04 and Ubuntu 20.04).
 
 # Description
 
@@ -193,7 +206,7 @@ This project has the following folders:
      other packages configuration;
 
  * **download** used to store packages, toolchain and kernels
-     downloaded from Internet;
+     downloaded from the Internet;
 
  * **templates** used to store files that will be copied to the root
      file system;
