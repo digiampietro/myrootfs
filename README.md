@@ -26,6 +26,18 @@ combinations of kernel, toolchain, and libraries supported by old
 versions of the tools mentioned above, when this happen this project
 can be useful.
 
+# Table of Content
+
+  - [About](#about)
+  - [Introduction](#introduction)
+    - [The Challenge](#the-challenge)
+    - [Information gathering](#information-gathering)
+    - [Building the emulation environment](#building-the-emulation-environment)
+      - [First step, easiest but less accurate](#first-step-easiest-but-less-accurate)
+      - [Second step, harder but more accurate](#second-step-harder-but-more-accurate)
+  - [Description](#description)
+    - [Main scripts](#main-scripts)
+
 # Introduction
 
 ## The Challenge
