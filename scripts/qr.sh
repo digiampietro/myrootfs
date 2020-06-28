@@ -39,7 +39,7 @@ for f in $FLASH0 $FLASH1
 do if [ ! -e "$f" ]
    then
        echo "-----> Creating flash image $f"
-       dd if=/dev/zero of=$f bs=1M count=64
+       dd if=/dev/zero of=$f bs=1M count=32
    fi
 done
 

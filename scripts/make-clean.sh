@@ -11,5 +11,9 @@ rm -fv  $IMAGES/*
 echo "-----> cleaning root file system"
 rm -rfv $ROOTFS/*
 
-echo "-----> removing $FAKEROOTCONF"
-rm -v $FAKEROOTCONF
+if [ -e $FAKEROOTCONF ]
+then
+    echo "-----> removing $FAKEROOTCONF"
+    rm -v $FAKEROOTCONF
+fi
+

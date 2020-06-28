@@ -9,7 +9,7 @@ source $MYDIR/setenv.sh
 for i in make-clean.sh \
 	 pkgs-download.sh \
 	 install-toolchains.sh \
-	 build-kernel \
+	 build-kernel.sh \
          install-templates.sh \
 	 install-libs.sh  \
 	 build-busybox.sh \
@@ -18,7 +18,13 @@ for i in make-clean.sh \
 do
     echo
     echo "-----> EXECUTING $i"
-    $MYDIR/$i
+    if $MYDIR/$i
+    then
+	echo "------> EXECUTED $i"
+    else
+	echo "---> ERROR executing $i exiting"
+	exit 1
+    fi
 done
 
 

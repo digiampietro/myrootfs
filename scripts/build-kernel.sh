@@ -6,6 +6,12 @@ source $MYDIR/setenv.sh
 LNXDIR=`/bin/ls -d $BUILD/linux-*`
 BLDDIR=$BUILD/linux/build
 
+if [ ! -d $BLDDIR ]
+then
+    echo "-----> making dir $BLDDIR"
+    mkdir -p $BLDDIR
+fi
+
 if [ ! -d $LNXDIR ]
 then
     echo "-----> ERROR Linux source tree $LNXDIR not found"

@@ -8,7 +8,7 @@ https://sourcery.mentor.com/public/gnu_toolchain/arm-none-linux-gnueabi/arm-2011
 http://kegel.com/crosstool/crosstool-0.43.tar.gz
 #
 # old Linux kernel 2.6.21
-https://cdn.kernel.org/pub/linux/kernel/v2.6/linux-2.6.21.tar.gz
+http://cdn.kernel.org/pub/linux/kernel/v2.6/linux-2.6.21.tar.gz
 #
 # other old packages
 https://www.busybox.net/downloads/busybox-1.01.tar.bz2

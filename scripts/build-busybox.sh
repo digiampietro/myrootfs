@@ -25,7 +25,7 @@ export CROSS_COMPILE=${TCPREFIX}-
 
 make CROSS_COMPILE=$CROSS_COMPILE distclean
 make CROSS_COMPILE=$CROSS_COMPILE defconfig
-cp   $CONFIGS/busybox_defconfig .config
+cat  $CONFIGS/busybox_defconfig | sed "s|^PREFIX=.*|PREFIX=\"$ROOTFS\"|" > .config
 make CROSS_COMPILE=$CROSS_COMPILE oldconfig
 make CROSS_COMPILE=$CROSS_COMPILE dep
 make CROSS_COMPILE=$CROSS_COMPILE
