@@ -53,7 +53,18 @@ add2path() {
   fi
 }
 
- 
+
+# rmpath, remove a dir from path
+# ref: https://riptutorial.com/bash/example/19618/remove-a-path-from-the-path-environment-variable
+rmpath(){
+    for path in "$@";do
+        PATH="$(echo "$PATH" |sed -e "s#\(^\|:\)$(echo "$path" |sed -e 's/[^^]/[&]/g' -e 's/\^/\\^/g')\(:\|/\{0,1\}$\)#\1\2#" -e 's#:\+#:#g' -e 's#^:\|:$##g')"
+    done
+}
+
+
+
+
 # Actual variables
 # -------------------------------------------------------------------------------------------------------
 # CURRTC:     Current Toolchain
@@ -94,7 +105,7 @@ add2path $MYDIR
 
 if [ "$1" = "debug" ]
 then
-    for i in MAINDIR ROOTFS BUILD IMAGES TEMPLATES CONFIGS TCLIB TCPATH TCPREFIX TCGCC TCLD FAKEROOTCONF OLDPATH PATH
+    for i in MAINDIR ROOTFS BUILD IMAGES TEMPLATES CONFIGS DOWNLOADS TCLIB TCPATH TCPREFIX TCGCC TCLD FAKEROOTCONF OLDPATH PATH
     do
 	printf "%-13s : " $i
 	eval v=\$$i

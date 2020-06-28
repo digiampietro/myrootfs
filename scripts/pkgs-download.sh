@@ -34,6 +34,9 @@ do echo
        then
 	    echo "-----> Package $F $FTYPE uncompressing/untarring"
 	    tar -xvf $DOWNLOADS/$F
+       elif [ "$FTYPE" = "POSIX" -o "$FTYPE" = "Bourne" ]
+       then
+	    echo "-----> Package $F is not a compressed package, skipping uncompressing"
        else
 	   echo "-----> ERROR in Package $F unknown compression type: $FTYPE"
 	   exit 1

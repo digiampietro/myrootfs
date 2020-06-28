@@ -1,3 +1,15 @@
-# this file contains urls of packages to download
+# this file contains urls of packages to download, including the kernel
+# and the toolchains
+#
+# old CodeSourcery toolchain to compile the kernel
+https://sourcery.mentor.com/public/gnu_toolchain/arm-none-linux-gnueabi/arm-2011.09-70-arm-none-linux-gnueabi.bin
+#
+# old Crosstool toolchain to compile the root file system
+http://kegel.com/crosstool/crosstool-0.43.tar.gz
+#
+# old Linux kernel 2.6.21
+https://cdn.kernel.org/pub/linux/kernel/v2.6/linux-2.6.21.tar.gz
+#
+# other old packages
 https://www.busybox.net/downloads/busybox-1.01.tar.bz2
 https://matt.ucc.asn.au/dropbear/releases/dropbear-0.52.tar.gz
